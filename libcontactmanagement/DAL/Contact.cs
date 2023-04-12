@@ -1,25 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace libcontactmanagement.DAL
+﻿namespace LibContactManagement.DAL
 {
     public class Contact
     {
-        public string name { get; set; }
-        public string phonenumber { get; set; }
-        public string datetime { get; set; }
-        public string email { get; set; }
-
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string DateTime { get; set; }
+        public string Email { get; set; }
 
         public Contact() { }
 
-        public Contact(string name=null,string phonenumber=null,string datetime=null,string email=null)
+        public Contact(string name, string phoneNumber, string dateTime = null, string email = null)
         {
-            this.name = name;
-            this.phonenumber = phonenumber;
-            this.datetime = datetime;
-            this.email = email;
+            Name = name;
+            PhoneNumber = phoneNumber;
+            DateTime = dateTime;
+            Email = email;
         }
     }
 }

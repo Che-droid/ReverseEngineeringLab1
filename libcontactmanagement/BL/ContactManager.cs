@@ -1,41 +1,47 @@
 ﻿using System;
-using libcontactmanagement.DAL;
+using LibContactManagement.DAL;
 using System.Collections.Generic;
-using System.Text;
 
-namespace libcontactmanagement.BL
+namespace LibContactManagement.BL
 {
-    public static class ContactManager
+    public class ContactManager
     {
-        //public static List<Contact> contacts = new List<Contact>();
-        public enum Field { name, phonenumber, email };
+        public enum Field { Name, PhoneNumber, Email };
 
-        public static IProvider provider;
+        private readonly IProvider _provider;
 
-        public static List<Contact> getContact(string name,Field field)
+        public ContactManager(IProvider provider)
         {
-            switch(field)
+            _provider = provider;
+        }
+
+        public List<Contact> GetContact(string name, Field field)
+        {
+            switch (field)
             {
-                case Field.name: return provider.nameretrieve(name);
-                case Field.phonenumber: return provider.phoneretrieve(name);
-                case Field.email: return provider.emailretrieve(name);
+                case Field.Name:
+                    return _provider.NameRetrieve(name);
+                case Field.PhoneNumber:
+                    return _provider.PhoneRetrieve(name);
+                case Field.Email:
+                    return _provider.EmailRetrieve(name);
             }
-            return null;
+            return new List<Contact>();
         }
 
-        public static int update(string name, string phonenumber,string newname)
+        public int Update(string name, string phoneNumber, string newName)
         {
-            return provider.update(new Contact(name, phonenumber), newname,DateTime.Now.ToString());
+            return _provider.Update(new Contact(name, phoneNumber), newName, DateTime.Now.ToString());
         }
 
-        public static int create(string name,string phonenumber,string email)
+        public int Create(string name, string phonenumber, string email)
         {
-            return provider.save(new Contact(name, phonenumber, DateTime.Now.ToString(),email));
+            return _provider.Save(new Contact(name, phonenumber, DateTime.Now.ToString(), email));
         }
 
-        public static int delete(string name, string phonenumber)
+        public int Delete(string name, string phonenumber)
         {
-            return provider.delete(name, phonenumber);
+            return _provider.Delete(name, phonenumber);
         }
     }
 }

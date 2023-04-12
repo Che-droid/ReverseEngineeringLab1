@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\libcontactmanagement\libcontactmanagement.csproj" />
+    <ProjectReference Include="..\libcontactmanagement\LibContactManagement.csproj" />
   </ItemGroup>
 
 </Project>

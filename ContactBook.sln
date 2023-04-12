@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.902
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConContactBook", "ConContactBook\ConContactBook.csproj", "{00183584-E957-4BBD-A446-C851D5365D94}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libcontactmanagement", "libcontactmanagement\libcontactmanagement.csproj", "{1F27A25E-9C5A-4179-BCCD-33A9736FF337}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibContactManagement", "libcontactmanagement\LibContactManagement.csproj", "{1F27A25E-9C5A-4179-BCCD-33A9736FF337}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

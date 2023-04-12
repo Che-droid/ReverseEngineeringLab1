@@ -1,132 +1,119 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.SQLite;
-using System.Data;
 
-namespace libcontactmanagement.DAL
+namespace LibContactManagement.DAL
 {
     public class SqliteDBprovider : IProvider
     {
-        string _connecitonstring;
+        private readonly string _connecitonString;
 
-        public SqliteDBprovider(string connectionstring)
+        public SqliteDBprovider(string connectionString)
         {
-            _connecitonstring = connectionstring;
+            _connecitonString = connectionString;
         }
 
-        public int delete(string name, string phonenumber)
+        public int Delete(string name, string phoneNumber)
         {
-            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonstring))
+            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonString))
             {
-                int output;
-                if (cnn != null)
+                try
                 {
                     cnn.Open();
-                    string sqlstatment = name.Equals("all") ? "delete from contact" : string.Format("delete from contact where name='{0}' and phonenumber='{1}'", name, phonenumber);
+                    string sqlstatment = name.Equals("all") ? "delete from contact" : string.Format("delete from contact where name='{0}' and phonenumber='{1}'", name, phoneNumber);
                     var sqlcommand = new SQLiteCommand(sqlstatment, cnn);
-                    output = sqlcommand.ExecuteNonQuery();
+                    return sqlcommand.ExecuteNonQuery();
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("failed connection");
-                    output = 0;
+                    throw new SQLiteException("Error occured while processing DB request: " + ex.Message);
                 }
-                return output;
             }
         }
 
-        public List<Contact> retrieve(string value, string field)
+        public List<Contact> Retrieve(string value, string field)
         {
-            List<Contact> contacts = new List<Contact>();
-            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonstring))
+            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonString))
             {
-                if (cnn != null)
+                try
                 {
                     cnn.Open();
                     string sqlstatement = string.Format("select name , phonenumber,datetime,email from contact where {1}='{0}';", value, field);
                     var sqlcommand = new SQLiteCommand(sqlstatement, cnn);
+                    List<Contact> contacts = new List<Contact>();
                     using (SQLiteDataReader rdr = sqlcommand.ExecuteReader())
                     {
-
-
                         while (rdr.Read())
                         {
                             Contact contact = new Contact();
-                            contact.name = rdr["name"].ToString();
-                            contact.phonenumber = rdr["phonenumber"].ToString();
-                            contact.datetime = rdr["datetime"].ToString();
-                            contact.email = rdr["email"].ToString();
+                            contact.Name = rdr["name"].ToString();
+                            contact.PhoneNumber = rdr["phonenumber"].ToString();
+                            contact.DateTime = rdr["datetime"].ToString();
+                            contact.Email = rdr["email"].ToString();
                             contacts.Add(contact);
                         }
                     }
-
+                    return contacts;
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("failed connection");
+                    throw new SQLiteException("Error occured while processing DB request: " + ex.Message);
                 }
             }
-            return contacts;
         }
 
-        public int save(Contact contact)
+        public int Save(Contact contact)
         {
-            int output;
-            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonstring))
+            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonString))
             {
-                if (cnn != null)
+                try
                 {
                     cnn.Open();
                     string sqlstatement = string.Format("INSERT INTO contact (name,phonenumber,datetime,email) VALUES ('{0}','{1}','{2}','{3}');",
-                                                        contact.name, contact.phonenumber, contact.datetime, contact.email);
+                                                        contact.Name, contact.PhoneNumber, contact.DateTime, contact.Email);
                     var sqlcommand = new SQLiteCommand(sqlstatement, cnn);
-                    output = sqlcommand.ExecuteNonQuery();
+                    return sqlcommand.ExecuteNonQuery();
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("failed connection");
-                    output = 0;
+                    throw new SQLiteException("Error occured while processing DB request: " + ex.Message);
                 }
             }
-            return output;
-
         }
 
-        public List<Contact> nameretrieve(string name)
+        public List<Contact> NameRetrieve(string name)
         {
-            return retrieve(name, "name");
-        }
-        public List<Contact> phoneretrieve(string phonenumber)
-        {
-            return retrieve(phonenumber, "phonenumber");
-        }
-        public List<Contact> emailretrieve(string email)
-        {
-            return retrieve(email, "email");
+            return Retrieve(name, "name");
         }
 
-        public int update(Contact oldcontact, string newname,string newdatetime)
+        public List<Contact> PhoneRetrieve(string phoneNumber)
         {
-            int output;
-            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonstring))
+            return Retrieve(phoneNumber, "phonenumber");
+        }
+
+        public List<Contact> EmailRetrieve(string email)
+        {
+            return Retrieve(email, "email");
+        }
+
+        public int Update(Contact oldContact, string newName, string newDatetime)
+        {
+            using (SQLiteConnection cnn = new SQLiteConnection(_connecitonString))
             {
-                if (cnn != null)
+                try
                 {
                     cnn.Open();
                     string sqlstatment = string.Format("update contact set name='{0}' ,datetime='{3}' where name='{1}' and phonenumber='{2}'",
-                                         newname,oldcontact.name,oldcontact.phonenumber,newdatetime
+                                         newName, oldContact.Name, oldContact.PhoneNumber, newDatetime
                                             );
                     var sqlcommand = new SQLiteCommand(sqlstatment, cnn);
-                    output=sqlcommand.ExecuteNonQuery();
+                    return sqlcommand.ExecuteNonQuery();
                 }
-                else
+                catch (Exception ex)
                 {
-                    Console.WriteLine("failed connection");
-                    output = 0;
+                    throw new SQLiteException("Error occured while processing DB request: " + ex.Message);
                 }
             }
-            return output;
         }
     }
 }

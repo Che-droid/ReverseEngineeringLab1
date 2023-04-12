@@ -1,19 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using libcontactmanagement.DAL;
-using libcontactmanagement.BL;
+﻿using System.Collections.Generic;
 
-
-namespace libcontactmanagement.DAL
+namespace LibContactManagement.DAL
 {
     public interface IProvider
     {
-         int save(Contact contact);
-         List<Contact> nameretrieve(string name);
-         List<Contact> phoneretrieve(string phonenumber);
-         List<Contact> emailretrieve(string email);
-         int delete(string name,string phonenumber);
-         int update(Contact oldcontact, string newname,string newdatetime);
+        int Save(Contact contact);
+        List<Contact> NameRetrieve(string name);
+        List<Contact> PhoneRetrieve(string phoneNumber);
+        List<Contact> EmailRetrieve(string email);
+        int Delete(string name, string phoneNumber);
+        int Update(Contact oldContact, string newName, string newDatetime);
     }
 }
